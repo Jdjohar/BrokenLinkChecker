@@ -1,3 +1,8 @@
+// Load environment variables for local development
+if (process.env.NODE_ENV !== 'production') {
+  require('dotenv').config();
+}
+
 const axios = require('axios');
 const cheerio = require('cheerio');
 const nodemailer = require('nodemailer');
@@ -13,9 +18,15 @@ const WEBSITES = [
 const EMAIL_FROM = process.env.EMAIL_FROM;
 const EMAIL_TO = process.env.EMAIL_TO;
 const EMAIL_PASSWORD = process.env.EMAIL_PASSWORD;
-const CONCURRENT_REQUESTS = 10; // Reduced for API delay handling
-const REQUEST_DELAY = 200; // Increased for API delay handling
-const MAX_URLS_PER_SITE = 500; // Max URLs to check per site
+const CONCURRENT_REQUESTS = 10;
+const REQUEST_DELAY = 200;
+const MAX_URLS_PER_SITE = 500;
+
+// Validate environment variables
+if (!EMAIL_FROM || !EMAIL_TO || !EMAIL_PASSWORD) {
+  console.error('Missing required environment variables: EMAIL_FROM, EMAIL_TO, or EMAIL_PASSWORD');
+  process.exit(1);
+}
 
 // Function to check if a URL is valid
 function isValidUrl(string) {
