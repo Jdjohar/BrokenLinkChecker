@@ -4,7 +4,7 @@ if (process.env.NODE_ENV !== 'production') {
 
 const cron = require('cron');
 const https = require('https');
-const { analyzeWebsites } = require('./broken-link-checker');
+const { analyzeWebsites } = require('./index');
 
 // Server restart configuration
 const backendUrl = process.env.BACKEND_URL || 'https://brokenlinkchecker-du00.onrender.com';
