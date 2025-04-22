@@ -1,3 +1,7 @@
+if (process.env.NODE_ENV !== 'production') {
+  require('dotenv').config();
+}
+
 const cron = require('cron');
 const https = require('https');
 const { analyzeWebsites } = require('./broken-link-checker');
