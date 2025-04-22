@@ -355,6 +355,7 @@ async function sendEmail(report, websiteUrl) {
     console.log(`Email sent successfully for ${websiteUrl}`);
   } catch (error) {
     console.error(`Error sending email for ${websiteUrl}: ${error.message}`);
+    throw new Error(`Failed to send email for ${websiteUrl}`);
   }
 }
 
@@ -367,14 +368,18 @@ async function analyzeWebsite(websiteUrl) {
   await checkAllLinks(urlsToCheck, websiteUrl, brokenLinks, checkedUrls);
 
   const report = generateReport(websiteUrl, brokenLinks, checkedUrls);
-  console.log(report.text); // Log plain text version to console
+  console.log(report.text);
   await sendEmail(report, websiteUrl);
 }
 
 // Main function to analyze all websites
 async function main() {
   for (const websiteUrl of WEBSITES) {
-    await analyzeWebsite(websiteUrl);
+    try {
+      await analyzeWebsite(websiteUrl);
+    } catch (error) {
+      console.error(`Error analyzing ${websiteUrl}: ${error.message}`);
+    }
   }
   console.log('All websites analyzed and reports sent.');
 }
