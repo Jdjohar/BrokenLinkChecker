@@ -10,9 +10,9 @@ const WEBSITES = [
   'https://datavapte.com',
   'https://innovtrack.com',
 ];
-const EMAIL_FROM = 'jdwebservices1@gmail.com'; // Replace with your email
-const EMAIL_TO = 'jdeep514@gmail.com'; // Replace with recipient email
-const EMAIL_PASSWORD = 'cwoxnbrrxvsjfbmr'; // Replace with your email app passwordcons
+const EMAIL_FROM = process.env.EMAIL_FROM;
+const EMAIL_TO = process.env.EMAIL_TO;
+const EMAIL_PASSWORD = process.env.EMAIL_PASSWORD;
 const CONCURRENT_REQUESTS = 10; // Reduced for API delay handling
 const REQUEST_DELAY = 200; // Increased for API delay handling
 const MAX_URLS_PER_SITE = 500; // Max URLs to check per site
