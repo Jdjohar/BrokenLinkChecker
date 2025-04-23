@@ -7,7 +7,7 @@ const https = require('https');
 const { analyzeWebsites } = require('./broken-link-checker');
 
 // Server restart configuration
-const backendUrl = process.env.BACKEND_URL || 'https://invoiceserver-sbd2.onrender.com';
+const backendUrl = process.env.BACKEND_URL || 'https://brokenlink.onrender.com';
 
 // Validate environment variables
 if (!process.env.EMAIL_FROM || !process.env.EMAIL_TO || !process.env.EMAIL_PASSWORD) {
@@ -15,7 +15,7 @@ if (!process.env.EMAIL_FROM || !process.env.EMAIL_TO || !process.env.EMAIL_PASSW
   process.exit(1);
 }
 
-// Cron job for server restart (every 14 minutes)
+// Cron job for server restart (every 14 minutes, IST)
 const restartJob = new cron.CronJob('*/14 * * * *', function () {
   console.log('Restarting server');
   https.get(backendUrl, (res) => {
@@ -27,10 +27,10 @@ const restartJob = new cron.CronJob('*/14 * * * *', function () {
   }).on('error', (err) => {
     console.error('Error during Restart:', err.message);
   });
-});
+}, null, true, 'Asia/Kolkata');
 
-// Cron job for daily website scan (every day at 12:00 AM UTC)
-const scanJob = new cron.CronJob('0 0 * * *', async function () {
+// Cron job for daily website scan (11:40 AM IST)
+const scanJob = new cron.CronJob('40 11 * * *', async function () {
   console.log('Starting daily website scan');
   try {
     await analyzeWebsites();
@@ -38,7 +38,7 @@ const scanJob = new cron.CronJob('0 0 * * *', async function () {
   } catch (error) {
     console.error('Error during daily scan:', error.message);
   }
-}, null, true, 'UTC');
+}, null, true, 'Asia/Kolkata');
 
 // Start both cron jobs
 restartJob.start();
